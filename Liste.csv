@@ -1,0 +1,3 @@
+Baustein;MSRNummer;Kurztext;Langtext;Var Text (nur bei MBIN);Meldung bei 0 (MBIN);Meldung bei 1 (MBIN)
+MBIN;L1200;Test1;Das ist ein Test;MIN;MIN;MAX
+IDF;H73210;Test2;Das ist ein Test;;;
