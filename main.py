@@ -8,12 +8,8 @@ if __name__ == "__main__":
         next(reader, None)
         for row in reader:
             newdir = "C:\\Users\p.schwarz\VSCode\WorkFree\Ausgabe\{0}.prt".format(row[1])
-            standart = ""
-            if row[0] == "MBIN":
-                standart = "C:\\Users\p.schwarz\VSCode\WorkFree\Standarts\{0}.prt".format("MBIN_Standart")
-            elif row[0] == "IDF":
-                standart = "C:\\Users\p.schwarz\VSCode\WorkFree\Standarts\{0}.prt".format("IDF_Standart")
-            shutil.copyfile(standart, newdir)
-            data = PrtFile.read(standart)
+            search_standart = PrtFile.getDir(row[0])
+            shutil.copyfile(search_standart, newdir)
+            data = PrtFile.read(search_standart)
             newfile = MSRdescribe(row).change(data)
             PrtFile.write(newdir, newfile)
