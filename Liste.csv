@@ -1,3 +1,3 @@
-Baustein;MSRNummer;Kurztext;Langtext;Var Text (nur bei MBIN);Meldung bei 0 (MBIN);Meldung bei 1 (MBIN)
-MBIN;L1200;Test1;Das ist ein Test;MIN;MIN;MAX
-IDF;H73210;Test2;Das ist ein Test;;;
+Baustein;MSRNummer;Kurztext;Langtext;Var Text;Meldung bei 0 (MBIN);Meldung bei 1 (MBIN);prio1
+MBIN;L1200123013292325;Test12345678910;Das ist ein Test2hgtruazeoqp;MINIch vbin so lang ich weis garnicht wohin mit mir;MINS<FJHDFKFDLK;MAXSDJFÖA;3
+IDF;H732103413708134t5;Test2123458890ßügdfas;Das ist ein TestvnfdmkM;"P100 KVHYHKJ<NLDÖSÄX<BG;MGMNFD";;;
