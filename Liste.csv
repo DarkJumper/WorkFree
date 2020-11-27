@@ -1,4 +1,4 @@
 Baustein;MSRNummer;Kurztext;Langtext;Var Text;Meldung bei 0 (MBIN);Meldung bei 1 (MBIN);MBA;MBE;DIM;prio1;GW1;leitend1;typ1;Mtext1;prio2;GW2;leitend2;typ2;Mtext2;prio3;GW3;leitend3;typ3;Mtext3;prio4;GW4;leitend4;typ4;Mtext4
-MANA_900;Q9000;Test Kurz;Test Lang;Text;;;200.0;300.0;mbar;2;250.0;j;12;MAXMAX;;;;;;;;;;;;;;;
-MANA_800;Q1000;Test Kurz;Test Lang;Text;;;;;;;;;;;;;;;;;;;;;;;;;
-MANA_700;Q1234;Test Kurz;Test Lang;Text;;;;;;;;;;;;;;;;;;;;;;;;;
+MANA_900;Q9000;Test Kurz;Test Lang;Text;;;200.0;300.0;mbar;2;250.0;j;3;MAXMAX;2;250.0;j;3;MAXMAX;2;250.0;j;3;MAXMAX;2;250.0;j;3;MAXMAX
+MANA_800;Q1000;Test Kurz;Test Lang;Text;;;200.0;300.0;mbar;2;250.0;j;3;MAXMAX;2;250.0;j;3;MAXMAX;2;250.0;j;3;MAXMAX;2;250.0;j;3;MAXMAX
+MANA_700;Q1234;Test Kurz;Test Lang;Text;;;200.0;300.0;mbar;2;250.0;j;3;MAXMAX;2;250.0;j;3;MAXMAX;2;250.0;j;3;MAXMAX;2;250.0;j;3;MAXMAX

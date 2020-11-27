@@ -37,7 +37,7 @@ class Baustein():
             if "Standart" in row:
                 newfile.append(row.replace("Standart", self.MSRName))
             elif "[PARA:PARADATA]" in row:
-                self.paraData(row)
+                newfile.append(self.paraData(row))
             elif "M54321" in row:
                 if "Kurztext" in row:
                     row = row.replace("Kurztext", self.KurzText[:12])
@@ -59,17 +59,25 @@ class Baustein():
         for i in range(len(splitted_data)):
             # Abfrage für Benutzer Definierter Baustein default wert werden mit gesucht!
             if splitted_data[i] == "KVal" and splitted_data[i + 4] == "100.0":
+                print("gefunden1")
                 splitted_data[i + 3] = str(len(self.MBE[:7]))
                 splitted_data[i + 4] = self.MBE[:7]
+                print(splitted_data)
             elif splitted_data[i] == "KVal" and splitted_data[i + 4] == "0.0":
+                print("gefunden2")
                 splitted_data[i + 3] = str(len(self.MBA[:7]))
                 splitted_data[i + 4] = self.MBA[:7]
+                print(splitted_data)
             elif splitted_data[i] == "MBE_Ausgang":
                 splitted_data[i + 3] = str(len(self.MBE[:7]))
                 splitted_data[i + 4] = self.MBE[:7]
+                print("gefunden3")
+                print(splitted_data)
             elif splitted_data[i] == "MBA_Ausgang":
                 splitted_data[i + 3] = str(len(self.MBA[:7]))
                 splitted_data[i + 4] = self.MBA[:7]
+                print("gefunden4")
+                print(splitted_data)
             #Standart Abfrage möglichkeiten
             if splitted_data[i] == "Bt0":
                 splitted_data[i + 3] = str(len(self.M0[:7]))
@@ -143,6 +151,7 @@ class Baustein():
             elif splitted_data[i] == "Mt4":
                 splitted_data[i + 3] = str(len(self.MText4[:7]))
                 splitted_data[i + 4] = self.MText4[:7]
+        print(";".join(splitted_data))
         return ";".join(splitted_data)
 
 
