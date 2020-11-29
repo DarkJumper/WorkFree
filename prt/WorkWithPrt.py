@@ -1,35 +1,69 @@
+import csv
+import shutil
+from osfi.osdir import *
+
+
+def prtRoutine():
+    listpath = osDir()
+    std_prt = PrtFile()
+    with open(listpath.getNormalDir() + "Liste.csv", newline='') as f:
+        reader = csv.reader(f, delimiter=";")
+        next(reader, None)
+        for row in reader:
+            new_file = listpath.getOutputDir() + row[1] + ".prt"
+            std_file = std_prt.getDir(row[0])
+            shutil.copyfile(std_file, new_file)
+            data = PrtFile.read(new_file)
+            new_data = Baustein(row).MSR(data)
+            std_prt.write(new_file, new_data)
+
+
 class Baustein():
-    name = "leer"
-    MSRName = ""
-    KurzText = ""
-    LangText = ""
-    VarName = ""
-    VarText = ""
-    MBA = "0.0"
-    MBE = "100.0"
-    DIM = "%"
-    M0 = ""
-    M1 = ""
-    GW1 = ""
-    Lf1 = ""
-    GW2 = ""
-    Lf2 = ""
-    GW3 = ""
-    Lf3 = ""
-    GW4 = ""
-    Lf4 = ""
-    custel1 = "0"
-    custel2 = "0"
-    custel3 = "0"
-    custel4 = "0"
-    prio1 = "-"
-    MText1 = ""
-    prio2 = "-"
-    MText2 = ""
-    prio3 = "-"
-    MText3 = ""
-    prio4 = "-"
-    MText4 = ""
+
+    def __init__(self, args):
+        if args[0] == "MBIN":
+            self.name = "MBIN"
+            self.VarName = args[1]
+        elif args[0] == "IDF":
+            self.name = "IDF"
+            self.VarName = args[1][1:]
+        elif "MANA" in args[0]:
+            if "900" in args[0]:
+                self.name = "MANA"
+            elif "800" in args[0]:
+                self.name = "MANA"
+            elif "700" in args[0]:
+                self.name = "MANA"
+            self.VarName = args[1]
+        self.MSRName = args[1]
+        self.KurzText = args[2]
+        self.LangText = args[3]
+        self.VarText = args[4]
+        self.M0 = args[5]
+        self.M1 = args[6]
+        self.MBA = args[7]
+        self.MBE = args[8]
+        self.DIM = args[9]
+        self.prio1 = args[10]
+        self.GW1 = args[11]
+        self.Lf1 = args[12]
+        self.custel1 = args[13]
+        self.MText1 = args[14]
+        self.prio2 = args[15]
+        self.GW2 = args[16]
+        self.Lf2 = args[17]
+        self.custel2 = args[18]
+        self.MText2 = args[19]
+        self.prio3 = args[20]
+        self.GW3 = args[21]
+        self.Lf3 = args[22]
+        self.custel3 = args[23]
+        self.MText3 = args[24]
+        self.prio4 = args[25]
+        self.GW4 = args[26]
+        self.Lf4 = args[27]
+        self.custel4 = args[28]
+        self.MText4 = args[29]
 
     def MSR(self, data):
         newfile = []
@@ -57,28 +91,17 @@ class Baustein():
     def paraData(self, data):
         splitted_data = data.split(";")
         for i in range(len(splitted_data)):
-            # Abfrage für Benutzer Definierter Baustein default wert werden mit gesucht!
             if splitted_data[i] == "KVal" and splitted_data[i + 4] == "100.0":
-                print("gefunden1")
                 splitted_data[i + 3] = str(len(self.MBE[:7]))
                 splitted_data[i + 4] = self.MBE[:7]
-                print(splitted_data)
             elif splitted_data[i] == "KVal" and splitted_data[i + 4] == "0.0":
-                print("gefunden2")
                 splitted_data[i + 3] = str(len(self.MBA[:7]))
-                splitted_data[i + 4] = self.MBA[:7]
-                print(splitted_data)
             elif splitted_data[i] == "MBE_Ausgang":
                 splitted_data[i + 3] = str(len(self.MBE[:7]))
                 splitted_data[i + 4] = self.MBE[:7]
-                print("gefunden3")
-                print(splitted_data)
             elif splitted_data[i] == "MBA_Ausgang":
                 splitted_data[i + 3] = str(len(self.MBA[:7]))
                 splitted_data[i + 4] = self.MBA[:7]
-                print("gefunden4")
-                print(splitted_data)
-            #Standart Abfrage möglichkeiten
             if splitted_data[i] == "Bt0":
                 splitted_data[i + 3] = str(len(self.M0[:7]))
                 splitted_data[i + 4] = self.M0[:7]
@@ -151,194 +174,7 @@ class Baustein():
             elif splitted_data[i] == "Mt4":
                 splitted_data[i + 3] = str(len(self.MText4[:7]))
                 splitted_data[i + 4] = self.MText4[:7]
-        print(";".join(splitted_data))
         return ";".join(splitted_data)
-
-
-class MBIN(Baustein):
-    name = "MBIN"
-    MSRName = ""
-    KurzText = ""
-    LangText = ""
-    VarName = ""
-    VarText = ""
-    M0 = ""
-    M1 = ""
-    prio1 = "-"
-
-
-class IDF(Baustein):
-    name = "IDF"
-    MSRName = ""
-    KurzText = ""
-    LangText = ""
-    VarName = ""
-    VarText = ""
-    prio1 = "-"
-    MText1 = ""
-    prio2 = "-"
-    MText2 = ""
-    prio3 = "-"
-    MText3 = ""
-    prio4 = "-"
-    MText4 = ""
-
-
-class MANA900(Baustein):
-    name = "MANA_900"
-    MSRName = ""
-    KurzText = ""
-    LangText = ""
-    VarName = ""
-    VarText = ""
-    MBA = "0.0"
-    MBE = "100.0"
-    DIM = "%"
-    GW1 = ""
-    Lf1 = ""
-    GW2 = ""
-    Lf2 = ""
-    GW3 = ""
-    Lf3 = ""
-    GW4 = ""
-    Lf4 = ""
-    custel1 = "0"
-    custel2 = "0"
-    custel3 = "0"
-    custel4 = "0"
-    prio1 = "-"
-    MText1 = ""
-    prio2 = "-"
-    MText2 = ""
-    prio3 = "-"
-    MText3 = ""
-    prio4 = "-"
-    MText4 = ""
-
-
-class MANA800(Baustein):
-    name = "MANA_800"
-    MSRName = ""
-    KurzText = ""
-    LangText = ""
-    VarName = ""
-    VarText = ""
-    MBA = "0.0"
-    MBE = "100.0"
-    DIM = "%"
-    GW1 = ""
-    Lf1 = ""
-    GW2 = ""
-    Lf2 = ""
-    GW3 = ""
-    Lf3 = ""
-    GW4 = ""
-    Lf4 = ""
-    custel1 = "0"
-    custel2 = "0"
-    custel3 = "0"
-    custel4 = "0"
-    prio1 = "-"
-    MText1 = ""
-    prio2 = "-"
-    MText2 = ""
-    prio3 = "-"
-    MText3 = ""
-    prio4 = "-"
-    MText4 = ""
-
-
-class MANA700(Baustein):
-    name = "MANA_700"
-    MSRName = ""
-    KurzText = ""
-    LangText = ""
-    VarName = ""
-    VarText = ""
-    MBA = "0.0"
-    MBE = "100.0"
-    DIM = "%"
-    GW1 = ""
-    Lf1 = ""
-    GW2 = ""
-    Lf2 = ""
-    GW3 = ""
-    Lf3 = ""
-    GW4 = ""
-    Lf4 = ""
-    custel1 = "0"
-    custel2 = "0"
-    custel3 = "0"
-    custel4 = "0"
-    prio1 = "-"
-    MText1 = ""
-    prio2 = "-"
-    MText2 = ""
-    prio3 = "-"
-    MText3 = ""
-    prio4 = "-"
-    MText4 = ""
-
-
-class MSRdescribe():
-
-    def __init__(self, args):
-        if args[0] == "MBIN":
-            self.Baustein_state = MBIN()
-            self.Baustein_state.VarName = args[1]
-            self.Baustein_state.M0 = args[5]
-            self.Baustein_state.M1 = args[6]
-        elif args[0] == "IDF":
-            self.Baustein_state = IDF()
-            self.Baustein_state.VarName = args[1][1:]
-            self.Baustein_state.M0 = args[5]
-            self.Baustein_state.M1 = args[6]
-            self.Baustein_state.prio1 = args[10]
-            self.Baustein_state.MText1 = args[14]
-            self.Baustein_state.prio2 = args[15]
-            self.Baustein_state.MText2 = args[19]
-            self.Baustein_state.prio3 = args[20]
-            self.Baustein_state.MText3 = args[24]
-            self.Baustein_state.prio4 = args[25]
-            self.Baustein_state.MText4 = args[29]
-        elif "MANA" in args[0]:
-            if "900" in args[0]:
-                self.Baustein_state = MANA900()
-            elif "800" in args[0]:
-                self.Baustein_state = MANA800()
-            elif "700" in args[0]:
-                self.Baustein_state = MANA700()
-            self.Baustein_state.VarName = args[1]
-            self.Baustein_state.MBA = args[7]
-            self.Baustein_state.MBE = args[8]
-            self.Baustein_state.DIM = args[9]
-            self.Baustein_state.prio1 = args[10]
-            self.Baustein_state.GW1 = args[11]
-            self.Baustein_state.Lf1 = args[12]
-            self.Baustein_state.custel1 = args[13]
-            self.Baustein_state.MText1 = args[14]
-            self.Baustein_state.prio2 = args[15]
-            self.Baustein_state.GW2 = args[16]
-            self.Baustein_state.Lf2 = args[17]
-            self.Baustein_state.custel2 = args[18]
-            self.Baustein_state.MText2 = args[19]
-            self.Baustein_state.prio3 = args[20]
-            self.Baustein_state.GW3 = args[21]
-            self.Baustein_state.Lf3 = args[22]
-            self.Baustein_state.custel3 = args[23]
-            self.Baustein_state.MText3 = args[24]
-            self.Baustein_state.prio4 = args[25]
-            self.Baustein_state.GW4 = args[26]
-            self.Baustein_state.Lf4 = args[27]
-            self.Baustein_state.custel4 = args[28]
-            self.Baustein_state.MText4 = args[29]
-        self.Baustein_state.MSRName = args[1]
-        self.Baustein_state.KurzText = args[2]
-        self.Baustein_state.LangText = args[3]
-        self.Baustein_state.VarText = args[4]
-
-    def change(self, data):
-        return self.Baustein_state.MSR(data)
 
 
 class PrtFile():
@@ -361,14 +197,15 @@ class PrtFile():
     @staticmethod
     def getDir(key):
         standart = ""
+        stdpath = osDir().getStdDir()
         if key == "MBIN":
-            standart = "C:\\Users\p.schwarz\VSCode\WorkFree\Standarts\MBIN_Standart.prt"
+            standart = stdpath + "MBIN_Standart.prt"
         elif key == "IDF":
-            standart = "C:\\Users\p.schwarz\VSCode\WorkFree\Standarts\IDF_Standart.prt"
+            standart = stdpath + "IDF_Standart.prt"
         elif key == "MANA_900":
-            standart = "C:\\Users\p.schwarz\VSCode\WorkFree\Standarts\MANA_900_Standart.prt"
+            standart = stdpath + "MANA_900_Standart.prt"
         elif key == "MANA_800":
-            standart = "C:\\Users\p.schwarz\VSCode\WorkFree\Standarts\MANA_800_Standart.prt"
+            standart = stdpath + "MANA_800_Standart.prt"
         elif key == "MANA_700":
-            standart = "C:\\Users\p.schwarz\VSCode\WorkFree\Standarts\MANA_700_Standart.prt"
+            standart = stdpath + "MANA_700_Standart.prt"
         return standart
