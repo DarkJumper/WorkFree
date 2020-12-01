@@ -1,4 +1,6 @@
 {
     "outputDir": "out",
-    "stdDir": "std"
+    "stdDir": "std",
+    "fgrDir": "fgr",
+    "prtDir": "prt"
 }

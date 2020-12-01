@@ -3,6 +3,11 @@ import shutil
 from osfi.osdir import *
 
 
+# Erstellt von Peter Schwarz am 25.10.2020
+# Klasse wird wie folgt importiert -> from syst.prt import *
+# prt Routine muss Ausgeführt werden um aus Excel liste die Daten auszulesen und dann als PRT raus gegeben werden kann.
+# Damit dateien Ausgegeben werden können müssen standarts im std ordner liegen und richtig benamt sein.
+# Vorsicht! Alle dateien die Ausgegeben werden sollten zuerst getestet werden bevor sie genutzt werden.
 def prtRoutine():
     listpath = osDir()
     std_prt = PrtFile()
@@ -10,7 +15,7 @@ def prtRoutine():
         reader = csv.reader(f, delimiter=";")
         next(reader, None)
         for row in reader:
-            new_file = listpath.getOutputDir() + row[1] + ".prt"
+            new_file = listpath.getOutPrtDir() + row[1] + ".prt"
             std_file = std_prt.getDir(row[0])
             shutil.copyfile(std_file, new_file)
             data = PrtFile.read(new_file)
@@ -18,6 +23,9 @@ def prtRoutine():
             std_prt.write(new_file, new_data)
 
 
+# Baustein klasse sucht nach bestimmten Key wörtern in Dateien und ersetzt diese dann entsprechend der Liste die Übergeben wird.
+# Beladen der daten wird beim Initalisieren vorgesehen nach einem gewissen schema.
+# Bei Übergabe in einer Falschen reihen folge werden bei Anwendung fehler auftreten.
 class Baustein():
 
     def __init__(self, args):
@@ -177,6 +185,9 @@ class Baustein():
         return ";".join(splitted_data)
 
 
+# Dateien werden Encode bzw. Decode wie das vom Programm gewünscht ist.
+# Es wird in utf-16-le-bom codiert.
+# Die richtige Standart datei wird hier ebenfals heraus gegeben. Dies betrifft allerdings nur PRT dateien.
 class PrtFile():
 
     @staticmethod
