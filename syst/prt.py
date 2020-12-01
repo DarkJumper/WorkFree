@@ -8,19 +8,27 @@ from osfi.osdir import *
 # prt Routine muss Ausgeführt werden um aus Excel liste die Daten auszulesen und dann als PRT raus gegeben werden kann.
 # Damit dateien Ausgegeben werden können müssen standarts im std ordner liegen und richtig benamt sein.
 # Vorsicht! Alle dateien die Ausgegeben werden sollten zuerst getestet werden bevor sie genutzt werden.
-def prtRoutine():
-    listpath = osDir()
-    std_prt = PrtFile()
-    with open(listpath.getNormalDir() + "Liste.csv", newline='') as f:
-        reader = csv.reader(f, delimiter=";")
-        next(reader, None)
-        for row in reader:
-            new_file = listpath.getOutPrtDir() + row[1] + ".prt"
-            std_file = std_prt.getDir(row[0])
-            shutil.copyfile(std_file, new_file)
-            data = PrtFile.read(new_file)
-            new_data = Baustein(row).MSR(data)
-            std_prt.write(new_file, new_data)
+class prt():
+
+    def __init__(self):
+        self.listpath = osDir()
+        self.std_prt = PrtFile()
+
+    def execute(self):
+        try:
+            with open(self.listpath.getNormalDir() + "Liste.csv", newline='') as f:
+                reader = csv.reader(f, delimiter=";")
+                next(reader, None)
+                for row in reader:
+                    new_file = self.listpath.getOutPrtDir() + row[1] + ".prt"
+                    std_file = self.std_prt.getDir(row[0])
+                    shutil.copyfile(std_file, new_file)
+                    data = PrtFile.read(new_file)
+                    new_data = Baustein(row).MSR(data)
+                    self.std_prt.write(new_file, new_data)
+            return 0
+        except FileNotFoundError:
+            return 1
 
 
 # Baustein klasse sucht nach bestimmten Key wörtern in Dateien und ersetzt diese dann entsprechend der Liste die Übergeben wird.
@@ -28,7 +36,7 @@ def prtRoutine():
 # Bei Übergabe in einer Falschen reihen folge werden bei Anwendung fehler auftreten.
 class Baustein():
 
-    def __init__(self, args):
+    def __init__(self, *args):
         if args[0] == "MBIN":
             self.name = "MBIN"
             self.VarName = args[1]

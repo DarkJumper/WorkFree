@@ -131,3 +131,4 @@ dmypy.json
 #VScode
 .vscode
 .DC_store
+.vscode/settings.json

@@ -5,6 +5,16 @@ from sys import platform as _platform
 
 class osDir():
 
+    def getSlash(self):
+        if _platform == "linux" or _platform == "linux2":
+            pass
+        elif _platform == "darwin":
+            return "/"
+        elif _platform == "win64":
+            return "\\"
+        elif _platform == "win32":
+            return "\\"
+
     def getNormalDir(self):
         if _platform == "linux" or _platform == "linux2":
             pass
