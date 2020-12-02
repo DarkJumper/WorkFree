@@ -33,7 +33,6 @@ class renameFgr():
 
 
 if __name__ == "__main__":
-    print(sys.version)
     test_dir = "C:\\Users\\p.schwarz\\Desktop\\FGR_test"
     name = "Elyse"
     test = renameFgr(test_dir, name, "TEST1", "TEST2", "TEST3")

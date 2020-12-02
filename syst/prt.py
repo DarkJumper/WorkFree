@@ -1,34 +1,48 @@
 import csv
 import shutil
+import types
 from osfi.osdir import *
 
 
 # Erstellt von Peter Schwarz am 25.10.2020
 # Klasse wird wie folgt importiert -> from syst.prt import *
 # prt Routine muss Ausgeführt werden um aus Excel liste die Daten auszulesen und dann als PRT raus gegeben werden kann.
+# Um funktion aufzurufen muss prt(FunktionName) aufgerufen werden und mit execute wird die Funktion erst ausgeführt.
+# Über die Variable Status kann der fehler ausgegeben werden.
+# 0 = Nicht ausgeführt | 1 = Erfolgreich Ausgeführt | -1 = FileNotFoundError | -2 = FileExistsError
 # Damit dateien Ausgegeben werden können müssen standarts im std ordner liegen und richtig benamt sein.
 # Vorsicht! Alle dateien die Ausgegeben werden sollten zuerst getestet werden bevor sie genutzt werden.
 class prt():
 
-    def __init__(self):
+    def __init__(self, func=None):
         self.listpath = osDir()
         self.std_prt = PrtFile()
+        self.status = 0
+        if func is not None:
+            self.execute = types.MethodType(func, self)
 
+    # Nur zum Ausführen der Methode gedacht.
     def execute(self):
-        try:
-            with open(self.listpath.getNormalDir() + "Liste.csv", newline='') as f:
-                reader = csv.reader(f, delimiter=";")
-                next(reader, None)
-                for row in reader:
-                    new_file = self.listpath.getOutPrtDir() + row[1] + ".prt"
-                    std_file = self.std_prt.getDir(row[0])
-                    shutil.copyfile(std_file, new_file)
-                    data = PrtFile.read(new_file)
-                    new_data = Baustein(row).MSR(data)
-                    self.std_prt.write(new_file, new_data)
-            return 0
-        except FileNotFoundError:
-            return 1
+        pass
+
+
+def creat(self):
+    try:
+        with open(self.listpath.getNormalDir() + "Liste.csv", newline='') as f:
+            reader = csv.reader(f, delimiter=";")
+            next(reader, None)
+            for row in reader:
+                new_file = self.listpath.getOutPrtDir() + row[1] + ".prt"
+                std_file = self.std_prt.getDir(row[0])
+                shutil.copyfile(std_file, new_file)
+                data = PrtFile.read(new_file)
+                new_data = Baustein(row).MSR(data)
+                self.std_prt.write(new_file, new_data)
+        self.status = 1
+    except FileNotFoundError:
+        self.status = -1
+    except FileExistsError:
+        self.status = -2
 
 
 # Baustein klasse sucht nach bestimmten Key wörtern in Dateien und ersetzt diese dann entsprechend der Liste die Übergeben wird.
@@ -36,7 +50,7 @@ class prt():
 # Bei Übergabe in einer Falschen reihen folge werden bei Anwendung fehler auftreten.
 class Baustein():
 
-    def __init__(self, *args):
+    def __init__(self, args):
         if args[0] == "MBIN":
             self.name = "MBIN"
             self.VarName = args[1]
