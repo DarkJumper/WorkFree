@@ -4,7 +4,7 @@ import types
 from osfi.osdir import *
 
 
-# Erstellt von Peter Schwarz am 25.10.2020
+# Erstellt von Peter Schwarz am 25.11.2020
 # Klasse wird wie folgt importiert -> from syst.prt import *
 # prt Routine muss Ausgeführt werden um aus Excel liste die Daten auszulesen und dann als PRT raus gegeben werden kann.
 # Um funktion aufzurufen muss prt(FunktionName) aufgerufen werden und mit execute wird die Funktion erst ausgeführt.
@@ -36,7 +36,7 @@ def creat(self):
                 std_file = self.std_prt.getDir(row[0])
                 shutil.copyfile(std_file, new_file)
                 data = PrtFile.read(new_file)
-                new_data = Baustein(row).MSR(data)
+                new_data = Baustein(*row).MSR(data)
                 self.std_prt.write(new_file, new_data)
         self.status = 1
     except FileNotFoundError:
@@ -50,7 +50,7 @@ def creat(self):
 # Bei Übergabe in einer Falschen reihen folge werden bei Anwendung fehler auftreten.
 class Baustein():
 
-    def __init__(self, args):
+    def __init__(self, *args):
         if args[0] == "MBIN":
             self.name = "MBIN"
             self.VarName = args[1]
