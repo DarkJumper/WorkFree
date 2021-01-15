@@ -1,7 +1,6 @@
 import csv
 import shutil
 import types
-from osfi.osdir import *
 
 
 # Erstellt von Peter Schwarz am 25.11.2020
@@ -13,34 +12,42 @@ from osfi.osdir import *
 # Damit dateien Ausgegeben werden können müssen standarts im std ordner liegen und richtig benamt sein.
 # Vorsicht! Alle dateien die Ausgegeben werden sollten zuerst getestet werden bevor sie genutzt werden.
 class prt():
+    new_file = ""
+    std_path = ""
+    excel_path = ""
 
     def __init__(self, func=None):
-        self.listpath = osDir()
-        self.std_prt = PrtFile()
+        #self.std_prt = PrtFile()
         self.status = 0
         if func is not None:
             self.execute = types.MethodType(func, self)
 
     # Nur zum Ausführen der Methode gedacht.
     def execute(self):
+        print("EXECUTE")
         pass
 
 
 def creat(self):
     try:
-        with open(self.listpath.getNormalDir() + "Liste.csv", newline='') as f:
+        with open(self.excel_path + "Liste.csv", newline='') as f:
             reader = csv.reader(f, delimiter=";")
             next(reader, None)
             for row in reader:
-                new_file = self.listpath.getOutPrtDir() + row[1] + ".prt"
-                std_file = self.std_prt.getDir(row[0])
-                shutil.copyfile(std_file, new_file)
-                data = PrtFile.read(new_file)
+                self.new_file = self.new_file + row[1] + ".prt"
+                std_file = PrtFile().getDir(row[0], self.std_path)
+                print("--START--")
+                print(std_file)
+                print(self.new_file)
+                shutil.copyfile(std_file, self.new_file)
+                print("Nach")
+                data = PrtFile.read(self.new_file)
+                print("data:" + data)
                 new_data = Baustein(*row).MSR(data)
-                self.std_prt.write(new_file, new_data)
+                self.std_prt.write(self.new_file, new_data)
         self.status = 1
-    except FileNotFoundError:
-        self.status = -1
+    #except FileNotFoundError:
+    #    self.status = -1
     except FileExistsError:
         self.status = -2
 
@@ -210,7 +217,7 @@ class Baustein():
 # Dateien werden Encode bzw. Decode wie das vom Programm gewünscht ist.
 # Es wird in utf-16-le-bom codiert.
 # Die richtige Standart datei wird hier ebenfals heraus gegeben. Dies betrifft allerdings nur PRT dateien.
-class PrtFile():
+class PrtFile(prt):
 
     @staticmethod
     def write(filepath, data):
@@ -228,17 +235,16 @@ class PrtFile():
         return data
 
     @staticmethod
-    def getDir(key):
+    def getDir(key, std_path):
         standart = ""
-        stdpath = osDir().getStdDir()
         if key == "MBIN":
-            standart = stdpath + "MBIN_Standart.prt"
+            standart = std_path + "MBIN_Standart.prt"
         elif key == "IDF":
-            standart = stdpath + "IDF_Standart.prt"
+            standart = std_path + "IDF_Standart.prt"
         elif key == "MANA_900":
-            standart = stdpath + "MANA_900_Standart.prt"
+            standart = std_path + "MANA_900_Standart.prt"
         elif key == "MANA_800":
-            standart = stdpath + "MANA_800_Standart.prt"
+            standart = std_path + "MANA_800_Standart.prt"
         elif key == "MANA_700":
-            standart = stdpath + "MANA_700_Standart.prt"
+            standart = std_path + "MANA_700_Standart.prt"
         return standart
