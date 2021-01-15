@@ -34,20 +34,16 @@ def creat(self):
             reader = csv.reader(f, delimiter=";")
             next(reader, None)
             for row in reader:
-                self.new_file = self.new_file + row[1] + ".prt"
+                new = ""
+                new = self.new_file + row[1] + ".prt"
                 std_file = PrtFile().getDir(row[0], self.std_path)
-                print("--START--")
-                print(std_file)
-                print(self.new_file)
-                shutil.copyfile(std_file, self.new_file)
-                print("Nach")
-                data = PrtFile.read(self.new_file)
-                print("data:" + data)
+                shutil.copyfile(std_file, new)
+                data = PrtFile.read(new)
                 new_data = Baustein(*row).MSR(data)
-                self.std_prt.write(self.new_file, new_data)
+                PrtFile().write(new, new_data)
         self.status = 1
-    #except FileNotFoundError:
-    #    self.status = -1
+    except FileNotFoundError:
+        self.status = -1
     except FileExistsError:
         self.status = -2
 
