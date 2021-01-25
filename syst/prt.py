@@ -67,6 +67,8 @@ class Baustein():
                 self.name = "MANA"
             elif "700" in args[0]:
                 self.name = "MANA"
+            elif "SCAL" in args[0]:
+                self.name = "MANA"
             self.VarName = args[1]
         self.MSRName = args[1]
         self.KurzText = args[2]
@@ -115,7 +117,7 @@ class Baustein():
                 if "Variabel" in row:
                     row = row.replace("Variabel", self.VarText[:24])
                 newfile.append(row.replace("54321", self.VarName[:9]))
-            elif "[LAD:PARA_REF]" in row and "MANA" in self.name:
+            elif "[LAD:PARA_REF]" in row and "MANA" in self.name or "SCAL" in self.name:
                 newfile.append(row.replace("0.0", self.MBA[:7]))
             else:
                 newfile.append(row)
@@ -150,6 +152,12 @@ class Baustein():
                 splitted_data[i + 3] = str(len(self.MBA[:7]))
                 splitted_data[i + 4] = self.MBA[:7]
             elif splitted_data[i] == "Mbe":
+                splitted_data[i + 3] = str(len(self.MBE[:7]))
+                splitted_data[i + 4] = self.MBE[:7]
+            elif splitted_data[i] == "Maa":
+                splitted_data[i + 3] = str(len(self.MBA[:7]))
+                splitted_data[i + 4] = self.MBA[:7]
+            elif splitted_data[i] == "Mea":
                 splitted_data[i + 3] = str(len(self.MBE[:7]))
                 splitted_data[i + 4] = self.MBE[:7]
             elif splitted_data[i] == "Dim":
@@ -203,7 +211,7 @@ class Baustein():
                 splitted_data[i + 3] = str(len(self.custel4[:1]))
                 splitted_data[i + 4] = self.custel4
             elif splitted_data[i] == "Mp4":
-                splitted_data[i + 4] = self.prio3
+                splitted_data[i + 4] = self.prio4
             elif splitted_data[i] == "Mt4":
                 splitted_data[i + 3] = str(len(self.MText4[:7]))
                 splitted_data[i + 4] = self.MText4[:7]
@@ -243,4 +251,6 @@ class PrtFile(prt):
             standart = std_path + "MANA_800_Standart.prt"
         elif key == "MANA_700":
             standart = std_path + "MANA_700_Standart.prt"
+        elif key == "MANA_SCAL":
+            standart = std_path + "MANA_SCAL_Standart.prt"
         return standart

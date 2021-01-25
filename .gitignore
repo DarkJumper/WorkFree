@@ -132,3 +132,4 @@ dmypy.json
 .vscode
 .DC_store
 .vscode/settings.json
+*.csv
